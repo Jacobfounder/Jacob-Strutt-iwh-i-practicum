@@ -18,6 +18,37 @@ function createApp({
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.urlencoded({ extended: true }));
 
+  app.get('/', async (req, res) => {
+    if (!token || !objectType) {
+      return res.status(500).render('homepage', {
+        title: 'Video Games | Integrating With HubSpot I Practicum',
+        data: [],
+        error: 'HubSpot is not configured. Check your local .env file.'
+      });
+    }
+
+    try {
+      const response = await client.get(
+        `https://api.hubapi.com/crm/v3/objects/${encodeURIComponent(objectType)}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { properties: 'name,genre,platform', limit: 100 }
+        }
+      );
+      return res.render('homepage', {
+        title: 'Video Games | Integrating With HubSpot I Practicum',
+        data: response.data.results
+      });
+    } catch (error) {
+      console.error('HubSpot list request failed:', error.response?.status || error.message);
+      return res.status(502).render('homepage', {
+        title: 'Video Games | Integrating With HubSpot I Practicum',
+        data: [],
+        error: 'HubSpot could not load the games. Check the app configuration and try again.'
+      });
+    }
+  });
+
   app.get('/update-cobj', (req, res) => {
     res.render('updates', { title: pageTitle });
   });

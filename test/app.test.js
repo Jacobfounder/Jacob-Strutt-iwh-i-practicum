@@ -69,3 +69,29 @@ test('POST /update-cobj rejects blank fields without calling HubSpot', async () 
   });
   assert.equal(called, false);
 });
+
+test('GET / lists all three game properties and links to the form', async () => {
+  const calls = [];
+  const client = {
+    get: async (...args) => {
+      calls.push(args);
+      return { data: { results: [
+        { id: '42', properties: { name: 'Celeste', genre: 'Platformer', platform: 'PC' } }
+      ] } };
+    }
+  };
+  const app = createApp({ token: 'test-token', objectType: '2-123', client });
+  await withServer(app, async (base) => {
+    const response = await fetch(base);
+    const html = await response.text();
+    assert.equal(response.status, 200);
+    for (const text of ['Name', 'Genre', 'Platform', 'Celeste', 'Platformer', 'PC', 'Add to this table']) {
+      assert.ok(html.includes(text), `missing ${text}`);
+    }
+    assert.match(html, /href="\/update-cobj"/);
+  });
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0][0], 'https://api.hubapi.com/crm/v3/objects/2-123');
+  assert.equal(calls[0][1].params.properties, 'name,genre,platform');
+  assert.equal(calls[0][1].headers.Authorization, 'Bearer test-token');
+});
