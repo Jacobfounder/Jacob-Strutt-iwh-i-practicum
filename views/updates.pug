@@ -1,0 +1,19 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title= title
+    link(rel='stylesheet', href='/css/style.css')
+  body
+    main
+      h1= title
+      a(href='/') Return to the homepage
+      form(method='post', action='/update-cobj')
+        label(for='name') Name
+        input#name(type='text', name='name', required, value=values && values.name)
+        label(for='genre') Genre
+        input#genre(type='text', name='genre', required, value=values && values.genre)
+        label(for='platform') Platform
+        input#platform(type='text', name='platform', required, value=values && values.platform)
+        button(type='submit') Add video game
