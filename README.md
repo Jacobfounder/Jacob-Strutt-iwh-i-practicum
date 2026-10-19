@@ -14,7 +14,7 @@ Create a private app named **Jacob's Practicum Private App** with read and write
 
 Set Name as the primary display property, and add at least three Video games records in the test account.
 
-**Custom object list in my developer test account:** Add the real URL here after the object is created. It must have the form `https://app.hubspot.com/contacts/<test-account-id>/objects/<custom-object-id>/views/all/list`.
+**Custom object list in my developer test account:** [Video games in HubSpot](https://app-na2.hubspot.com/contacts/247730964/objects/2-270396287/views/all/list).
 
 ## Local setup
 
