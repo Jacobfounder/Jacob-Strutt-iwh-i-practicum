@@ -9,6 +9,8 @@ html(lang='en')
     main
       h1= title
       a(href='/') Return to the homepage
+      if error
+        p(role='alert')= error
       form(method='post', action='/update-cobj')
         label(for='name') Name
         input#name(type='text', name='name', required, value=values && values.name)
