@@ -1,0 +1,28 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title= title
+    link(rel='stylesheet', href='/css/style.css')
+  body
+    main
+      h1 Video Games
+      a(href='/update-cobj') Add to this table
+      if error
+        p(role='alert')= error
+      else if data.length === 0
+        p No video games have been added yet.
+      else
+        table
+          thead
+            tr
+              th(scope='col') Name
+              th(scope='col') Genre
+              th(scope='col') Platform
+          tbody
+            each game in data
+              tr
+                td= game.properties.name || ''
+                td= game.properties.genre || ''
+                td= game.properties.platform || ''
